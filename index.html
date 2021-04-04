@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>导航</title>
+    <link rel = "stylesheet " href="./style.css"
+</head>
+<body>
+    <header>
+    </header>
+    <main>
+        <style>
+            .kbStyle{
+                width: 50px;
+                height: 48px;
+                /* 渐变底色 */
+                background: linear-gradient(to bottom,#292929 0%,#111111 100%);
+                /* 边框颜色 */
+                border: 1px solid #373737;
+                /* 文字颜色 */
+                color: #c5c5c5;
+                /* 边框圆角半径 */
+                border-radius: 8px;
+                /* 边框阴影 上 像素 下 像素 颜色 (四个属性) */
+                box-shadow: 0 0 0 1px #1A1b1c, 0 0 0 2px #1f2020, 0 2.5px 0 2px #080808;
+                /* ????? */
+                display: inline-flex;
+                /* 横向居中（文字） */
+                align-items: center;
+                /* 垂直居中（文字） */
+                justify-content: center;
+                /* 字体大小 */
+                font-size: 20px;
+                /* 设置字体 */
+                font-family: 'Courier New', Courier, monospace;
+
+            }
+            .row{
+                /* div之间的间距 */
+                margin: 20px ;
+            }
+            .row .kbStyle{
+                /* div 里面的keyboard 之间的距离 */
+                margin: 6px;
+            }
+        </style>
+        <div class="wrapper" id="x">
+        </div>
+    </main>
+    <footer></footer>
+    <script>
+        var keys={
+            '0':{0:'q',1:'w',2:'e',3:'r',4:'t',5:'y',6:'u',7:'i',8:'o',9:'p','length':10},
+            '1':{0:'a',1:'s',2:'d',3:'f',4:'g',5:'h',6:'j',7:'k',8:'l','length':9},
+            '2':{0:'z',1:'x',2:'c',3:'v',4:'b',5:'n',6:'m','length':7},
+            'length':3
+        }
+        var hash ={
+            q:'qq.com',
+            w:'weib.com',
+            e:'ele.me',
+            r:'renren.com',
+            t:'tianya.com',
+            y:'youtube.com',
+            u:'uc.com'
+        }
+        // 把js获得的hash覆盖原来的hash，但是如果value为null的话，就会在字符串转换成hash就会出现问题
+        // var hashInLocalStorage = JSON.parse(localStorage.getItem('ls'))
+        var hashInLocalStorage = JSON.parse(localStorage.getItem('ls') || 'null')
+        // 优先获得原本设置的hash
+        if (hashInLocalStorage){
+            hash = hashInLocalStorage
+        }
+    // 遍历keys，生成kbd标签
+        index = 0
+        while(index < keys['length']){ // 0 1 2
+            // 创建一个标签
+            div1 = document.createElement('div')
+            div1.className = 'row'
+            // 生成子元素
+            x.appendChild(div1)
+            row = keys[index] // 第一个数组  第二个数组  第三个数组  内容
+            index = index+1
+            console.log(row)
+            index2 = 0
+            while(index2 < row['length']){
+                console.log(row['length']) // 0-9  0-8  0-7
+                kbd1 = document.createElement('kbd')
+                // 生成内容
+                kbd1.textContent = row[index2]
+                kbd1.className = 'kbStyle'
+                // 给kbd里面添加一个button按钮
+                // button 只是一个容器，在26次循环里面，只在button这个容器里面循环
+                // 监听button是不会获得点击事件的key的，只会打印最后一次的button内容（id="m"）
+                buttonX = document.createElement('button')
+                buttonX.textContent = '❀'
+                buttonX.id = row[index2]
+                // 点击事件
+                buttonX.onclick = function(click){
+                    // button 点击 不能够直接获得当前点击的key
+                    console.log(click)
+                    console.log('clicked!')
+                    // 获取点击事件的ID
+                    key = (click['target']['id'])
+                    inputInfo = prompt('Give me something!')
+                    hash[key] = inputInfo; //重写当前的id（key）对应的网址（value）
+                    //把js获得的hash键值对通过json编译成字符串（localStorage只能够保存字符串），然后保存到一个名为’ls‘的地方
+                    // 页面的application的localStorage 里面就能够看到
+                    localStorage.setItem('ls',JSON.stringify(hash))
+                }
+                kbd1.appendChild(buttonX)
+            div1.appendChild(kbd1)
+            index2 = index2 +1
+            }
+
+            // 监听,只要按一个键就会监听到（监听的对象很重要）
+            // function名字随便，但是能够包含所有需要的信息
+            document.onkeypress = function(liscen){
+                console.log(liscen)
+                console.log("I am watching you")
+
+                // --》 知道 key： 能够获取使用的按键 
+
+                key = liscen['key']
+                website = hash[key]
+                console.log(website)
+
+                // location当前地址栏，href 地址
+                // location.href = "http://"+website
+                window.open("http://"+website,'_blank')
+                // 等效于 点击A标签，在新窗口打开页面
+                // <a href="http://baidu.com" target="_blank"></a>
+            }
+        }
+    </script>
+    
+</body>
+</html>

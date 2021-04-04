@@ -1,0 +1,46 @@
+*{margin:0;padding:0;}  /*把所有 margin 和 padding 都删除掉*/
+a{text-decoration: none;}
+kbd{
+    border: 1px solid red; /* 边框颜色 */
+    width:4em; height: 4em;
+    display:inline-block; /* 内联元素 */
+    text-transform: uppercase; /* 内容大写 */
+    position: relative; /* 关联位置，使得内联元素能够设置绝对位置，如果没有设置，内联元素的绝对位置无效 */
+}
+
+kbd > button{
+    /* keyboard 里面的 button 绝对定位 */
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: none; /* 默认不出现 */
+}
+/* 悬停按钮会出现 */
+kbd:hover > button{
+    display: inline-block;
+}
+/* main整体向右移动第二第三行分别向右移动1个、3个键位 */
+/* main > div:nth-child(2){
+    margin-left: 1em;
+}
+
+main > div:nth-child(3){
+    margin-left:3em;
+} */
+/* div直接放在main里面不便调整，所以要放在main的div里面，需要把样式改为div的id完成 */
+#x > div:nth-child(2){
+    margin-left: -22px;
+}
+
+#x > div:nth-child(3){
+    margin-left:-80px;
+} 
+
+main{
+    text-align: center;
+}
+
+#x{
+    display: inline-block;
+}
+
